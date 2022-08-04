@@ -90,7 +90,7 @@ def the_post():
 def signout():
   login_session['user'] = None
   auth.current_user = None
-  return redirect(url_for('signin'))
+  return redirect(url_for('signout'))
 
 
 #create a new route called all_tweets and an html page called "tweets.html"
