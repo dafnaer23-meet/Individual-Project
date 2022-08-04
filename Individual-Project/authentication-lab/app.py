@@ -86,11 +86,11 @@ def add_post():
 def the_post():
   posts = db.child("post").get().val()
 
-    @app.route('/signout')
+@app.route('/signout')
 def signout():
   login_session['user'] = None
-auth.current_user = None
-return redirect(url_for('signin'))
+  auth.current_user = None
+  return redirect(url_for('signin'))
 
 
 #create a new route called all_tweets and an html page called "tweets.html"
