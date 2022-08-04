@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>THE_ART_WAY</title>
+	 <title>PICTURES_OF_ART</title>
+<style>
+button{
+	font-family:verdana;
+	font-size:18px;
+	background-color: #EE82EE;
+	color:white;
+	padding: 15px 32px;
+	text-align: center;
+}
+.h{
+	font-family: monaco;
+	font-size: 36px;
+	text-color:green;
+	text-align:center;
+}
+</style>
 </head>
-<body>
 
-<h1>This is a heading</h1>
-<p>Hello {{full_name}}!</p>
+<body>
+ 
+<h1 class="h">PICTURES_OF_ART</h1>
+<p>Hello {{user['full_name']}}!</p>
 <a href = "/signup"><button> Click me to go to signup!</button></a>
 <a href = "/signin"><button> Click me to go to signin!</button></a>
+<a href="/add_post"><button>click me to add a post!</button></a>
+<a href="/signout"><button>click me to signout!</button></a>
 </body>
 </html>

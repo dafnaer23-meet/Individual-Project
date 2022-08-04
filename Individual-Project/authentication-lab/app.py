@@ -12,7 +12,6 @@ firebaseConfig = {
   "storageBucket": "project-72cd5.appspot.com",
   "messagingSenderId": "789369560609",
   "appId": "1:789369560609:web:9e1f311cebcd65c2248d60",
-  "databaseURL" : "https://project-72cd5-default-rtdb.firebaseio.com/"
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -27,7 +26,8 @@ app.config['SECRET_KEY'] = 'super-secret-key'
 
 @app.route('/', methods=['GET', 'POST'])
 def my_home():
-  return render_template("home.html")
+  user = ""
+  return render_template("home.html", user = user  )
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -62,30 +62,35 @@ def signup():
     login_session['password'] = request.form['password']
     email = login_session['email']
     password = login_session['password'] 
-    try:
-      login_session['user'] = auth.create_user_with_email_and_password(email, password)
-      user={"full_name":request.form["full_name"], "bio":request.form["bio"]}
-      db.child("Users").child(login_session["user"]["localId"]).set(user)
-      return redirect(url_for('signin'))
-    except:
-      error = "Authentication failed"
-      return error 
+    login_session['user'] = auth.create_user_with_email_and_password(email, password)
+    user={"full_name":request.form["full_name"], "bio":request.form["bio"]}
+    db.child("Users").child(login_session["user"]["localId"]).set(user)
+    return redirect(url_for('signin'))
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-  name = db.child("Users").child(login_session['user']['localId']).child("full_name").get().val()
-  return render_template("home.html", full_name=name)
+  user = db.child("Users").child(login_session['user']['localId']).get().val()
+  return render_template("home.html", user = user)
 
 
 @app.route('/add_post', methods=['GET', 'POST'])
 def add_post():
-  post={"username":request.form["username"], "picture":request.form["picture"]}
-  db.child("posts").push("post")
-  return render_template("add_post.html")
+  if request.method=="POST": 
+    post={"username":request.form["username"], "picture":request.form["picture"]}
+    db.child("posts").push("post")
+    return redirect(url_for('the_post'))
+  else:
+    return render_template("add_post.html")
 
 @app.route('/all_posts', methods=['GET', 'POST'])
 def the_post():
   posts = db.child("post").get().val()
+
+    @app.route('/signout')
+def signout():
+  login_session['user'] = None
+auth.current_user = None
+return redirect(url_for('signin'))
 
 
 #create a new route called all_tweets and an html page called "tweets.html"
